@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// To switch to MSSQL: change provider to "sqlserver" and update DATABASE_URL
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  password     String
+  role         String        @default("user") // "admin" | "user"
+  refreshToken String?
+  activityLogs ActivityLog[]
+}
+
+model Director {
+  id          Int          @id @default(autoincrement())
+  name        String
+  position    String
+  creditCards CreditCard[]
+  reports     Report[]
+}
+
+model CreditCard {
+  id         Int      @id @default(autoincrement())
+  bankName   String
+  cardNumber String
+  directorId Int
+  director   Director @relation(fields: [directorId], references: [id], onDelete: Cascade)
+  reports    Report[]
+}
+
+model Report {
+  id           Int           @id @default(autoincrement())
+  month        Int
+  year         Int
+  creditLimit  Decimal       @db.Decimal(15, 2)
+  totalAmount  Decimal       @default(0) @db.Decimal(15, 2)
+  directorId   Int
+  director     Director      @relation(fields: [directorId], references: [id], onDelete: Cascade)
+  creditCardId Int
+  creditCard   CreditCard    @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@unique([directorId, creditCardId, month, year])
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  description String
+  amount      Decimal  @db.Decimal(15, 2)
+  reportId    Int
+  report      Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+}
+
+model ActivityLog {
+  id          Int      @id @default(autoincrement())
+  action      String   // CREATE_REPORT, DELETE_DIRECTOR, EXPORT_PDF, etc.
+  entity      String   // report, director, transaction, user, export
+  entityId    String?  // ID of the affected entity (nullable for exports etc.)
+  description String   // Human-readable description
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+}
