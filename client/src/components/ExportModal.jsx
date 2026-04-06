@@ -9,7 +9,6 @@ import { generateExcel } from '../utils/exportExcel.js';
 export default function ExportModal({ report, onClose }) {
     const [exporting, setExporting] = useState(false);
 
-    // New Form Fields
     const [form, setForm] = useState({
         noRekap: '',
         noPo: '',
@@ -74,14 +73,13 @@ export default function ExportModal({ report, onClose }) {
                             <div style={{ flex: 1 }}>
                                 <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--color-text-muted)', marginBottom: 6 }}>Nomor Rekap</label>
                                 <div style={{ display: 'flex', alignItems: 'center', background: '#fff', border: '1px solid var(--color-border)', borderRadius: 'var(--radius)', padding: '0 8px' }}>
-                                    <span style={{ fontSize: 13, color: 'var(--color-border)' }}>REKAP/.../</span>
-                                    <input type="text" name="noRekap" value={form.noRekap} onChange={handleChange} style={{ border: 'none', background: 'transparent', outline: 'none', padding: '10px 4px', fontSize: 13, width: '100%', color: 'var(--color-text)' }} placeholder="123" />
+                                    <input type="text" name="noRekap" value={form.noRekap} onChange={handleChange} style={{ border: 'none', background: 'transparent', outline: 'none', padding: '10px 8px', fontSize: 13, width: '100%', color: 'var(--color-text)' }} placeholder="Cth: 123" />
                                 </div>
                             </div>
                             <div style={{ flex: 1 }}>
                                 <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--color-text-muted)', marginBottom: 6 }}>Nomor PO</label>
                                 <div style={{ display: 'flex', alignItems: 'center', background: '#fff', border: '1px solid var(--color-border)', borderRadius: 'var(--radius)', padding: '0 8px' }}>
-                                    <input type="text" name="noPo" value={form.noPo} onChange={handleChange} style={{ border: 'none', background: 'transparent', outline: 'none', padding: '10px 4px', fontSize: 13, width: '100%', color: 'var(--color-text)' }} placeholder="PO-0001" />
+                                    <input type="text" name="noPo" value={form.noPo} onChange={handleChange} style={{ border: 'none', background: 'transparent', outline: 'none', padding: '10px 4px', fontSize: 13, width: '100%', color: 'var(--color-text)' }} placeholder="Cth: 123" />
                                 </div>
                             </div>
                         </div>
@@ -90,13 +88,13 @@ export default function ExportModal({ report, onClose }) {
                             <div style={{ flex: 1 }}>
                                 <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--color-text-muted)', marginBottom: 6 }}>Jabatan Penandatangan Kiri</label>
                                 <div style={{ display: 'flex', alignItems: 'center', background: '#fff', border: '1px solid var(--color-border)', borderRadius: 'var(--radius)', padding: '0 8px' }}>
-                                    <input type="text" name="jabatanKiri" value={form.jabatanKiri} onChange={handleChange} style={{ border: 'none', background: 'transparent', outline: 'none', padding: '10px 4px', fontSize: 13, width: '100%', color: 'var(--color-text)' }} placeholder="Cth: Mengetahui" />
+                                    <input type="text" name="jabatanKiri" value={form.jabatanKiri} onChange={handleChange} style={{ border: 'none', background: 'transparent', outline: 'none', padding: '10px 4px', fontSize: 13, width: '100%', color: 'var(--color-text)' }} placeholder="Cth: Kepala Bagian" />
                                 </div>
                             </div>
                             <div style={{ flex: 1 }}>
                                 <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--color-text-muted)', marginBottom: 6 }}>Jabatan Penandatangan Kanan</label>
                                 <div style={{ display: 'flex', alignItems: 'center', background: '#fff', border: '1px solid var(--color-border)', borderRadius: 'var(--radius)', padding: '0 8px' }}>
-                                    <input type="text" name="jabatanKanan" value={form.jabatanKanan} onChange={handleChange} style={{ border: 'none', background: 'transparent', outline: 'none', padding: '10px 4px', fontSize: 13, width: '100%', color: 'var(--color-text)' }} placeholder="Cth: Menyetujui" />
+                                    <input type="text" name="jabatanKanan" value={form.jabatanKanan} onChange={handleChange} style={{ border: 'none', background: 'transparent', outline: 'none', padding: '10px 4px', fontSize: 13, width: '100%', color: 'var(--color-text)' }} placeholder="Cth: Kepala Divisi" />
                                 </div>
                             </div>
                         </div>

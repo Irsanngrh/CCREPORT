@@ -100,14 +100,12 @@ export default function ReportsPage() {
                 </button>
             </div>
 
-            {/* Menu Filter Bertingkat: Memfilter direktur, bulan, atau tahun tertentu */}
             <div className="filter-bar" ref={dropRef}>
                 <div className="filter-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Filter size={13} />
                     <span>FILTER</span>
                 </div>
 
-                {/* Pemilih Nama Direksi */}
                 <div className="dropdown-wrapper">
                     <button className="filter-btn" onClick={() => toggleDropdown('director')}>
                         {selectedDirectorName || 'Semua Direksi'}
@@ -115,7 +113,6 @@ export default function ReportsPage() {
                     {openDropdown === 'director' && (
                         <div className="dropdown-menu">
                             <div className={`dropdown-item${!filterDirector ? ' active' : ''}`} onClick={() => setFilter('director', '')}>Semua Direksi</div>
-                            {/* Mengambil entitas unik Direksi yang sudah memiliki Laporan terdaftar */}
                             {[...new Map(data.reports.map((r) => [r.directorId, r.director])).entries()].map(([id, dir]) => (
                                 <div key={id} className={`dropdown-item${String(id) === filterDirector ? ' active' : ''}`} onClick={() => setFilter('director', String(id))}>
                                     {dir?.name}
@@ -125,7 +122,6 @@ export default function ReportsPage() {
                     )}
                 </div>
 
-                {/* Pemilih Rentang Bulan (Dimatikan saat mode Tahunan) */}
                 {filterType === 'monthly' && (
                     <div className="dropdown-wrapper">
                         <button className="filter-btn" onClick={() => toggleDropdown('month')}>
@@ -142,7 +138,6 @@ export default function ReportsPage() {
                     </div>
                 )}
 
-                {/* Pemilih Tahun Publikasi Laporan */}
                 <div className="dropdown-wrapper">
                     <button className="filter-btn" onClick={() => toggleDropdown('year')}>
                         {filterYear || 'Tahun'}
@@ -160,7 +155,6 @@ export default function ReportsPage() {
 
                 <span style={{ color: 'var(--color-border)', margin: '0 4px' }}>|</span>
 
-                {/* Mode Perhitungan Akumulasi Bulanan vs Tahunan */}
                 <button
                     className={`filter-btn${filterType === 'monthly' ? ' active' : ''}`}
                     onClick={() => setFilter('type', 'monthly')}
@@ -177,7 +171,6 @@ export default function ReportsPage() {
 
             {error && <div className="alert alert-danger mb-4">{error}</div>}
 
-            {/* Rendering Hierarki Tabel Data Utama Beserta Komponen Nilai Rupiah */}
             <div className="table-wrapper">
                 {loading ? (
                     <div className="loading-full"><div className="spinner" /></div>
@@ -252,12 +245,10 @@ export default function ReportsPage() {
                 )}
             </div>
 
-            {/* Modul Ekspor PDF/Excel (Tergantung Pilihan User) */}
             {exportTarget && (
                 <ExportModal report={exportTarget} onClose={() => setExportTarget(null)} />
             )}
 
-            {/* Modul Konfirmasi Destruktif / Peringatan Penghapusan */}
             {deleteTarget && (
                 <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
                     <div className="modal modal-sm" onClick={(e) => e.stopPropagation()}>

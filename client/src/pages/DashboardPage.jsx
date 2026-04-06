@@ -6,7 +6,6 @@ import { api } from '../api/axios.js';
 import { getErrorMessage, formatDate } from '../utils/helpers.js';
 import { useAuth } from '../context/AuthContext.jsx';
 
-// Translate UI notification action labels to Indonesian
 const ACTION_LABELS = {
     CREATE_REPORT: 'Laporan Dibuat', UPDATE_REPORT: 'Laporan Diperbarui', DELETE_REPORT: 'Laporan Dihapus',
     CREATE_DIRECTOR: 'Direksi Dibuat', UPDATE_DIRECTOR: 'Direksi Diperbarui', DELETE_DIRECTOR: 'Direksi Dihapus',
@@ -85,7 +84,6 @@ export default function DashboardPage() {
 
             {error && <div className="alert alert-danger mb-4">{error}</div>}
 
-            {/* Menampilkan statistik umum (Total Laporan, Direksi, dsb) di bagian atas layar */}
             <div className="stats-grid" style={{ marginBottom: 20 }}>
                 <StatCard icon={FileText} label="Total Laporan" value={stats.totalReports} sub={`${stats.reportsThisMonth ?? 0} bulan ini`} color="var(--color-primary)" />
                 <StatCard icon={Users} label="Total Direksi" value={stats.totalDirectors} color="var(--color-success)" />
@@ -103,25 +101,24 @@ export default function DashboardPage() {
                             </Link>
                         )}
                     </div>
-                    <div className="card" style={{ display: 'flex', flexDirection: 'column', height: 360 }}>
-                        <div className="card-body" style={{ padding: 0, overflowY: 'auto', flex: 1 }}>
-                            {recentLogs.length === 0 ? (
-                                <div className="empty-state" style={{ padding: '32px 24px' }}>
-                                    <Activity size={32} className="empty-state-icon" />
-                                    <div className="empty-state-title">Belum ada aktivitas tercatat</div>
-                                </div>
-                            ) : (
-                                <table className="data-table">
+                    <div className="card" style={{ display: 'flex', flexDirection: 'column', height: 360, overflow: 'hidden' }}>
+                        {recentLogs.length === 0 ? (
+                            <div className="empty-state" style={{ padding: '32px 24px' }}>
+                                <Activity size={32} className="empty-state-icon" />
+                                <div className="empty-state-title">Belum ada aktivitas tercatat</div>
+                            </div>
+                        ) : (
+                            <div style={{ overflowY: 'auto', height: '100%' }}>
+                                <table className="data-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                                     <thead>
                                         <tr>
-                                            <th className="nowrap">Pengguna</th>
-                                            <th className="nowrap">Aksi Sistem</th>
-                                            <th>Deskripsi Aktivitas</th>
-                                            <th className="right nowrap">Waktu</th>
+                                            <th className="nowrap" style={{ position: 'sticky', top: 0, zIndex: 1, background: 'var(--color-bg)', boxShadow: '0 1px 0 var(--color-border)' }}>Pengguna</th>
+                                            <th className="nowrap" style={{ position: 'sticky', top: 0, zIndex: 1, background: 'var(--color-bg)', boxShadow: '0 1px 0 var(--color-border)' }}>Aksi Sistem</th>
+                                            <th style={{ position: 'sticky', top: 0, zIndex: 1, background: 'var(--color-bg)', boxShadow: '0 1px 0 var(--color-border)' }}>Deskripsi Aktivitas</th>
+                                            <th className="right nowrap" style={{ position: 'sticky', top: 0, zIndex: 1, background: 'var(--color-bg)', boxShadow: '0 1px 0 var(--color-border)' }}>Waktu</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* Melakukan iterasi dan merender 5 - 10 log aktivitas terbaru yang ditarik dari backend */}
                                         {recentLogs.map(log => (
                                             <tr key={log.id}>
                                                 <td className="font-semibold nowrap">{log.user?.username}</td>
@@ -135,12 +132,11 @@ export default function DashboardPage() {
                                         ))}
                                     </tbody>
                                 </table>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Grafik batang rekap aktivitas harian selama 7 hari ke belakang (Weekly Metric) */}
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ marginBottom: 12 }}>
                         <h2 style={{ fontSize: 18, fontWeight: 600, color: 'var(--color-text-primary)' }}>Aktivitas - 7 Hari Terakhir</h2>

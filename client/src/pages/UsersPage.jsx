@@ -7,8 +7,6 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
 import { getErrorMessage } from '../utils/helpers.js';
 
-// Display User Management page exclusive for Administrators
-// Asynchronously fetch the list of users from the API
 export default function UsersPage() {
     const { user: currentUser } = useAuth();
     const toast = useToast();

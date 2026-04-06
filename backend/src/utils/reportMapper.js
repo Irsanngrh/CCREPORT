@@ -1,4 +1,3 @@
-// ─── Shared Report Mapper ──────────────────────────────────────────────────────
 export const mapReport = (r) => ({
     ...r,
     totalExpenses: r.totalAmount,

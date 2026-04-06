@@ -112,7 +112,6 @@ export default function DirectorsPage() {
                 )}
             </div>
 
-            {/* Modul Konfirmasi Penghapusan Direksi */}
             {deleteTarget && (
                 <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
                     <div className="modal modal-sm" onClick={(e) => e.stopPropagation()}>

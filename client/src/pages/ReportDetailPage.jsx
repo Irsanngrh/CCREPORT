@@ -17,7 +17,7 @@ export default function ReportDetailPage() {
     const [error, setError] = useState('');
     const [showExport, setShowExport] = useState(false);
 
-    const [editingTrx, setEditingTrx] = useState(null); // { id, date, desc, amount }
+    const [editingTrx, setEditingTrx] = useState(null);
     const [newTrx, setNewTrx] = useState({ transactionDate: '', description: '', amount: '' });
     const [savingNew, setSavingNew] = useState(false);
     const [savingEdit, setSavingEdit] = useState(false);
@@ -38,7 +38,6 @@ export default function ReportDetailPage() {
     useEffect(() => { fetchReport(); }, [directorName, month, year, last4cc]);
 
     const startEdit = (trx) => {
-        // Format initial amount
         const amountString = String(Math.round(Number(trx.amount)));
         const formatted = amountString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
@@ -65,7 +64,7 @@ export default function ReportDetailPage() {
             await transactionsApi.update(editingTrx.id, {
                 transactionDate: editingTrx.transactionDate,
                 description: editingTrx.description,
-                amount: finalAmount, // Send raw number
+                amount: finalAmount,
             });
             setEditingTrx(null);
             fetchReport();
@@ -121,9 +120,7 @@ export default function ReportDetailPage() {
     };
 
     const handleAmountChange = (val, isEdit = false) => {
-        // Remove non-digit chars
         const numberString = val.replace(/\D/g, '');
-        // Add thousand separators
         const formatted = numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
         if (isEdit) {
@@ -155,7 +152,6 @@ export default function ReportDetailPage() {
 
     return (
         <Layout>
-            {/* Navigasi Roti */}
             <div className="breadcrumb mb-4">
                 <Link to="/reports" className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     <ArrowLeft size={13} /> Rekap Laporan
@@ -166,7 +162,6 @@ export default function ReportDetailPage() {
                 <span>{getMonthName(report.month)} {report.year}</span>
             </div>
 
-            {/* Kartu Header Informasi */}
             <div className="card mb-6">
                 <div className="card-body">
                     <div className="flex justify-between items-center" style={{ borderBottom: '1px solid var(--color-border)', paddingBottom: 16, marginBottom: 20 }}>
@@ -211,7 +206,6 @@ export default function ReportDetailPage() {
                 </div>
             </div>
 
-            {/* Tabel Transaksi */}
             <div className="flex justify-between items-center mb-4 mt-8">
                 <h3 className="font-semibold" style={{ fontSize: 15 }}>Rincian Transaksi</h3>
             </div>
@@ -351,7 +345,6 @@ export default function ReportDetailPage() {
 
             {showExport && <ExportModal report={report} onClose={() => setShowExport(false)} />}
 
-            {/* Modal Konfirmasi Hapus Transaksi */}
             {deleteTrxTarget && (
                 <div className="modal-overlay" onClick={() => setDeleteTrxTarget(null)}>
                     <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 400 }}>

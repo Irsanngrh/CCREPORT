@@ -55,7 +55,6 @@ export default function ActivityLogsPage() {
     const [page, setPage] = useState(1);
     const LIMIT = 50;
 
-    // Fetch unique user, action, and entity values for dropdown population
     useEffect(() => {
         api.get('/api/logs/filters').then(res => setFilterOptions(res.data.data)).catch(() => { });
     }, []);
@@ -63,7 +62,6 @@ export default function ActivityLogsPage() {
     const fetchLogs = useCallback(() => {
         setLoading(true);
         const params = { ...filters, page, limit: LIMIT };
-        // Strip empty values
         Object.keys(params).forEach(k => { if (!params[k]) delete params[k]; });
         api.get('/api/logs', { params })
             .then(res => {

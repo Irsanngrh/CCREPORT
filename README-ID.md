@@ -168,7 +168,7 @@ CC Report/
 
 ### Langkah 1: Clone Repository
 ```bash
-git clone <url-repository>
+git clone https://github.com/Irsanngrh/CCREPORT.git
 cd "CC Report"
 ```
 
