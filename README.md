@@ -29,7 +29,7 @@
 
 ## 1. Gambaran Proyek
 
-**CC Report** adalah aplikasi web internal untuk mengelola dan melaporkan pengeluaran kartu kredit direksi perusahaan. Sistem ini dibangun ulang (migrasi) dari sistem Laravel lama ke tumpukan teknologi modern Node.js + React.
+**CC Report** adalah aplikasi web internal untuk mengelola dan melaporkan pengeluaran kartu kredit direksi perusahaan.
 
 **Fitur Utama:**
 - Login aman dengan JWT dan rotasi refresh token
@@ -47,35 +47,35 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                  Browser (React SPA)                         │
+│                  Browser (React SPA)                        │
 │  React 18 + Vite │ React Router v7 │ lucide-react           │
-│  AuthContext (JWT di memori) │ ToastContext (notifikasi UI)  │
+│  AuthContext (JWT di memori) │ ToastContext (notifikasi UI) │
 └─────────────────────────────┬───────────────────────────────┘
                               │  HTTP/HTTPS (REST API)
                               │  Access Token: Authorization: Bearer
                               │  Refresh Token: httpOnly Cookie
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                 Nginx Reverse Proxy (Produksi)               │
+│                 Nginx Reverse Proxy (Produksi)              │
 │  Terminasi HTTPS │ Melayani file statis │ Proxy API         │
 └─────────────────────────────┬───────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                  Node.js + Express Backend                   │
+│                  Node.js + Express Backend                  │
 │  Port: 5000                                                 │
 │  ├── Middleware: Helmet, CORS, Rate Limit, Cookie Parser    │
 │  ├── Auth Middleware: Verifikasi JWT + pemeriksaan peran    │
 │  ├── Validasi: Skema Zod per endpoint                       │
-│  ├── Services: auth.service.js (dapat diganti untuk AD)    │
-│  └── Controllers: auth, directors, reports, transactions,  │
+│  ├── Services: auth.service.js (dapat diganti untuk AD)     │
+│  └── Controllers: auth, directors, reports, transactions,   │
 │       users, dashboard, activityLog                         │
 └─────────────────────────────┬───────────────────────────────┘
                               │  Prisma ORM
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│           Database PostgreSQL (port 5432)                    │
-│  Tabel: User, Director, CreditCard, Report,                │
+│           Database PostgreSQL (port 5432)                   │
+│  Tabel: User, Director, CreditCard, Report,                 │
 │         Transaction, ActivityLog                            │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -110,8 +110,8 @@
 
 ```
 CC Report/
-├── .env                      # Variabel lingkungan (JANGAN commit!)
-├── .env.example              # Template — aman untuk di-commit
+├── .env                      # Variabel lingkungan
+├── .env.example              # Template
 ├── .gitignore
 ├── nginx.conf.example        # Konfigurasi Nginx untuk produksi
 ├── User Manual.md            # Panduan untuk pengguna akhir
@@ -219,8 +219,6 @@ NODE_ENV="development"
 ```bash
 node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 ```
-
-> **Catatan Keamanan:** Jangan pernah commit file `.env` ke version control. Gunakan `.env.example` sebagai panduan.
 
 ---
 
@@ -476,8 +474,6 @@ LDAP_URL="ldap://your-ad-server.company.local"
 LDAP_BASE_DN="dc=company,dc=local"
 ```
 
-**Estimasi waktu migrasi:** 2–4 hari kerja
-
 ---
 
 ## 16. Panduan Migrasi ke Microsoft SQL Server
@@ -506,8 +502,6 @@ npx prisma migrate deploy
 - **`Decimal(15,2)`:** Kompatibel penuh dengan MSSQL `DECIMAL(15,2)`
 - **Tidak ada query raw** yang bergantung pada sintaks PostgreSQL-spesifik
 
-**Estimasi waktu migrasi:** 1–2 hari kerja
-
 ---
 
 ## 17. Pertimbangan Keamanan
@@ -524,10 +518,3 @@ npx prisma migrate deploy
 | CORS | Dibatasi hanya ke `CLIENT_URL` |
 | SQL injection | Dicegah oleh query terparameterisasi Prisma |
 | XSS | React meng-escape output secara default |
-
-### Checklist Sebelum Produksi
-- [ ] Rotasi semua secrets di `.env` sebelum deployment pertama
-- [ ] Verifikasi `.env` tidak pernah ter-commit ke git history
-- [ ] Set `NODE_ENV=production` di server
-- [ ] Konfigurasi sertifikat SSL di Nginx
-- [ ] Batasi akses database hanya dari IP server

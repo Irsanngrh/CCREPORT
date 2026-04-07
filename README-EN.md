@@ -29,7 +29,7 @@
 
 ## 1. Project Overview
 
-**CC Report** is an internal web application for managing and reporting corporate credit card (kartu kredit direksi) expenditures. It was migrated from a legacy Laravel system to a modern Node.js + React stack.
+**CC Report** is an internal web application for managing and reporting corporate credit card (kartu kredit direksi) expenditures.
 
 **Core Features:**
 - Secure login with JWT authentication and refresh token rotation
@@ -47,35 +47,35 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                         Browser (React SPA)                  │
+│                         Browser (React SPA)                 │
 │  React 18 + Vite │ React Router v7 │ lucide-react icons     │
-│  AuthContext (JWT in memory) │ ToastContext (UI feedback)    │
+│  AuthContext (JWT in memory) │ ToastContext (UI feedback)   │
 └─────────────────────────────┬───────────────────────────────┘
                               │  HTTP/HTTPS (REST API)
                               │  Access Token: Authorization: Bearer
                               │  Refresh Token: httpOnly Cookie
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   Nginx Reverse Proxy (Production)           │
+│                   Nginx Reverse Proxy (Production)          │
 │  HTTPS termination │ Static file serving │ API proxying     │
 └─────────────────────────────┬───────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   Node.js + Express Backend                  │
+│                   Node.js + Express Backend                 │
 │  Port: 5000                                                 │
 │  ├── Middleware: Helmet, CORS, Rate Limit, Cookie Parser    │
 │  ├── Auth Middleware: JWT verification + role check         │
 │  ├── Validation: Zod schemas per route                      │
-│  ├── Services: auth.service.js (swappable for AD)          │
-│  └── Controllers: auth, directors, reports, transactions,  │
+│  ├── Services: auth.service.js (swappable for AD)           │
+│  └── Controllers: auth, directors, reports, transactions,   │
 │       users, dashboard, activityLog                         │
 └─────────────────────────────┬───────────────────────────────┘
                               │  Prisma ORM
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│           PostgreSQL Database (port 5432)                    │
-│  Tables: User, Director, CreditCard, Report,               │
+│           PostgreSQL Database (port 5432)                   │
+│  Tables: User, Director, CreditCard, Report,                │
 │          Transaction, ActivityLog                           │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -110,8 +110,8 @@
 
 ```
 CC Report/
-├── .env                      # Environment variables (NEVER commit)
-├── .env.example              # Template — safe to commit
+├── .env                      # Environment variables
+├── .env.example              # Template
 ├── .gitignore                # Root gitignore
 ├── nginx.conf.example        # Production Nginx configuration
 ├── User Manual.md            # End-user documentation
@@ -236,8 +236,6 @@ NODE_ENV="development"
 ```bash
 node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 ```
-
-> **Security Note:** Never commit `.env` to version control. Use `.env.example` as the template.
 
 ---
 
@@ -532,8 +530,6 @@ LDAP_URL="ldap://your-ad-server.company.local"
 LDAP_BASE_DN="dc=company,dc=local"
 ```
 
-**Estimated migration effort:** 2–4 working days (one backend developer familiar with LDAP)
-
 ---
 
 ## 16. Microsoft SQL Server Migration Guide
@@ -573,8 +569,6 @@ npx prisma migrate deploy
 - **`@default(autoincrement())`:** Maps to `IDENTITY(1,1)` in MSSQL — fully compatible.
 - **`onDelete: Cascade`:** Supported in MSSQL via foreign key constraints.
 
-**Estimated migration effort:** 1–2 working days
-
 ---
 
 ## 17. Security Considerations
@@ -591,11 +585,3 @@ npx prisma migrate deploy
 | CORS | Restricted to `CLIENT_URL` only |
 | SQL injection | Prevented by Prisma parameterized queries |
 | XSS | React auto-escapes output; no `dangerouslySetInnerHTML` |
-
-### Checklist Before Production
-- [ ] Rotate all secrets in `.env` before first deployment
-- [ ] Verify `.env` is NOT tracked in git history
-- [ ] Set `NODE_ENV=production` on the server
-- [ ] Configure SSL certificate on Nginx
-- [ ] Restrict database access to server IP only
-- [ ] Enable PostgreSQL connection pooling (PgBouncer) for scale

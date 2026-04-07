@@ -65,6 +65,5 @@
  * - auth.controller.js dan seluruh JWT session handling TIDAK PERLU DIUBAH
  * - Refresh token, logout, dan route protection tetap bekerja sama persis
  * - Hanya bagian verifikasi kredensial di auth.service.js yang diganti
- * - Estimasi waktu pengerjaan: 2-4 hari kerja backend developer
  * ─────────────────────────────────────────────────────────────────────────────
  */
